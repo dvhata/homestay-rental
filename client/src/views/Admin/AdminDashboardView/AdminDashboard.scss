@@ -1,0 +1,70 @@
+.all {
+  background-color: #1890ff;
+}
+
+.col-1-dashboard {
+  margin: 30px;
+  background-color: white;
+  .header-dashboard {
+    margin-top: 10px;
+    margin: 30px;
+    font-weight: bold;
+  }
+}
+
+.button-not-login {
+  width: 300px;
+  background-color: yellow;
+}
+
+.img-not-login {
+  margin-top: -50px;
+  width: 30%;
+  height: 300px;
+}
+
+.div-not-login {
+}
+
+.h1-not-login {
+  margin-bottom: 50px;
+}
+
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  .dashboard-header {
+    background-color: white;
+    margin-top: 20px;
+    .dashboard-header-dropdown {
+      margin-top: 0px;
+      margin-left: 70%;
+      .dashboard-header-h3 {
+        margin: 0;
+      }
+      
+    }
+  }
+  .dashboard-content {
+    background-color: white;
+
+    margin-top: 50px;
+  }
+}
+
+.ant-dropdown-menu {
+  width: 12%;
+  margin-left: 85%;
+}
+
+.ant-dropdown {
+  margin: -120px;
+}
+
+.button-dashboard {
+  width: 100%;
+}
+
+.button-dropdown {
+  border: none;
+}

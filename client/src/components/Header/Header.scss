@@ -1,0 +1,32 @@
+img {
+  margin-top: 25px;
+  margin-left: 70px;
+}
+
+.navbar-group {
+  margin-top: 3%;
+  .link {
+    color: #413f3d;
+    text-decoration: none;
+    font-weight: bold;
+    margin-right: 6%;
+    margin-top: 20px;
+    font-size: 16px;
+  }
+  .link:hover {
+    color: #cb9e9b;
+  }
+}
+
+.button-link {
+  width: 100px;
+  height: 40px;
+  background-color: #000000;
+  color: #fbf1f3;
+  border-radius: 10px;
+}
+
+.button-link:hover {
+  color: black;
+  border-color: #000000;
+}

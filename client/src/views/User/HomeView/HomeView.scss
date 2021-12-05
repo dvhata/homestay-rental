@@ -1,0 +1,56 @@
+div {
+  width: 100%;
+  .container {
+    margin-top: 50px;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    margin-left: 7%;
+    .col-1 {
+      h1 {
+        font-weight: bold;
+        font-size: 50px;
+      }
+      h3 {
+        font-size: 18px;
+      }
+      button {
+        margin-left: 7%;
+        background-color: #51784f;
+        width: 150px;
+        height: 44px;
+        border: none;
+        border-radius: 10px;
+        .link {
+          font-size: 15px;
+          color: #fbf1f3;
+          text-decoration: none;
+        }
+      }
+      .link-admin {
+        margin-left: 10px;
+        font-size: 15px;
+        color: black;
+      }
+
+      .link-admin:hover {
+        margin-left: 10px;
+        font-size: 15px;
+        color: #51784f;
+      }
+      
+      
+  
+      button:hover {
+        background-color: black;
+      }
+    }
+    .anh-1 {
+      img {
+        width: 60%;
+        height: 50%;
+      }
+    }
+  }
+  
+}

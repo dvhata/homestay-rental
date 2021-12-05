@@ -1,0 +1,28 @@
+.login-form {
+    margin: 10%;
+    margin-top: 20px;
+}
+
+.login-title {
+    margin: 0 auto;
+    margin-left: 10%;
+   margin-top: 50px;
+}
+
+.login-col-1 {
+    // width:30%;
+    z-index: 2;
+    
+   
+    position: relative; 
+    // background-color: #98a58fc0;
+}
+
+.login-col-2 {
+    z-index: 1;position: relative;
+    position: absolute; 
+}
+
+.login-img-2 {
+    width: 90%;
+}
