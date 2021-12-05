@@ -1,5 +1,5 @@
 import React from "react";
-import apartmentTypeApi from "../../../api/AprtmentTypeApi";
+import apartmentTypeApi from "../../../api/ApartmentTypeApi";
 import Header from "../../../components/Header/Header";
 import { ApartmentType } from "../../../models/ApartmentType/ApartmentType";
 import { Col, Row } from "antd";

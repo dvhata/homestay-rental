@@ -17,7 +17,7 @@ import React from "react";
 import { Link, useParams } from "react-router-dom";
 import adminApi from "../../../api/AdminApi";
 import apartmentApi from "../../../api/ApartmentApi";
-import apartmentTypeApi from "../../../api/AprtmentTypeApi";
+import apartmentTypeApi from "../../../api/ApartmentTypeApi";
 import axiosClient from "../../../config/axiosClient";
 import { Apartment } from "../../../models/Apartment/Apartment";
 import { ApartmentDetail } from "../../../models/ApartmentDetail/ApartmentDetail";
@@ -56,17 +56,17 @@ export default function Dashboard() {
       });
 
       adminApi.waiting(token).then((result: User) => {
-        console.log(result);
+        // console.log(result);
         setWaitingOrder(result);
       });
 
       adminApi.confirmed(token).then((result: User) => {
-        console.log(result);
+        // console.log(result);
         setConfirmedOrder(result);
       });
 
       adminApi.staying(token).then((result: User) => {
-        console.log(result);
+        // console.log(result);
         setStayingOrder(result);
       });
     }
@@ -81,7 +81,7 @@ export default function Dashboard() {
           headers: { Authorization: token },
         })
         .then((response) => {
-          console.log(response);
+          // console.log(response);
         });
     },
     [token]
@@ -95,7 +95,7 @@ export default function Dashboard() {
           headers: { Authorization: token },
         })
         .then((response) => {
-          console.log(response);
+          // console.log(response);
         });
     },
     [token]
@@ -109,7 +109,7 @@ export default function Dashboard() {
           headers: { Authorization: token },
         })
         .then((response) => {
-          console.log(response);
+          // console.log(response);
         });
     },
     [token]

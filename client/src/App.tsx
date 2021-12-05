@@ -11,6 +11,7 @@ import AdminRegister from "./views/Admin/AdminRegisterView/AdminRegister";
 import AdminDashboard from "./views/Admin/AdminDashboardView/AdminDashboard";
 import ApartmentMaster from "./views/User/ApartmentView/ApartmentMaster";
 import ApartmentTypeMaster from "./views/User/ApartmentTypeView/ApartmentTypeMaster";
+import ApartmentDetailMaster from "./views/User/ApartmentDetailView/ApartmentDetailMaster";
 
 export default function App() {
   return (
@@ -25,6 +26,9 @@ export default function App() {
               <Route path=":slug" element={<ApartmentMaster />} />
             </Route>
             <Route path="apartment-type" element={<ApartmentTypeMaster />} />
+            <Route path="apartment-detail" element={<ApartmentDetailMaster />}>
+              <Route path=":slug" element={<ApartmentDetailMaster />} />
+            </Route>
             <Route path="/profile" element={<Profile />} />
             <Route path="/admin-login" element={<AdminLogin />} />
             <Route path="/admin-register" element={<AdminRegister />} />
