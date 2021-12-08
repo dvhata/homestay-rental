@@ -49,9 +49,36 @@ class ApartmentApi {
     return axiosClient.get(url).then((response) => response.data);
   };
 
-  order = (slug?: string) => {
+  order = (slug?: string, token?: string, data?: any) => {
     const url = "/apartments/" + slug + "/save-order";
-    return axiosClient.post(url, slug).then((response) => response.data);
+    if (token) {
+      return axiosClient
+        .post(
+          url,
+          {},
+          {
+            headers: { Authorization: token as string },
+          }
+        )
+        .then((response) => response.data);
+    } else {
+      return axiosClient
+        .post(url, { data }, {})
+        .then((response) => response.data);
+    }
+  };
+
+  feedback = (slug?: string, token?: string, data?: any) => {
+    const url = "/apartments/" + slug + "/add-feedback";
+    return axiosClient
+      .post(
+        url,
+        { data },
+        {
+          headers: { Authorization: token as string },
+        }
+      )
+      .then((response) => response.data);
   };
 }
 const apartmentApi = new ApartmentApi();

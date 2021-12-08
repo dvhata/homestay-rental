@@ -1,9 +1,19 @@
-import { Breadcrumb, Button, Carousel, Col, Modal, Row } from "antd";
+import {
+  Breadcrumb,
+  Button,
+  Carousel,
+  Col,
+  Form,
+  Input,
+  Modal,
+  Row,
+} from "antd";
 import React from "react";
 import { Link } from "react-router-dom";
 
 import apartmentApi from "../../../api/ApartmentApi";
 import userApi from "../../../api/UserApi";
+import ApartsDetail from "../../../components/ApartsDetail/ApartsDetail";
 import Footer from "../../../components/Footer/Footer";
 import Header from "../../../components/Header/Header";
 import { Apartment } from "../../../models/Apartment/Apartment";
@@ -22,13 +32,37 @@ export default function ApartmentDetailMaster() {
   const token = localStorage.getItem("token");
   const login = authToken?.login;
 
+  let slug: any = localStorage.getItem("apartment-slug");
+  let type_slug: any = apartmentDetail && apartmentDetail.apartment?.type_slug;
+
   //modal
   const [visibleLogin, setVisibleLogin] = React.useState(false);
   const [confirmLoading, setConfirmLoading] = React.useState(false);
-  const [modalText, setModalText] = React.useState("Bạn chắc chắn muốn đặt phòng chứ?");
+  const [modalText, setModalText] = React.useState(
+    "Bạn chắc chắn muốn đặt phòng chứ?"
+  );
 
-  let slug: any = localStorage.getItem("apartment-slug");
-  let type_slug: any = apartmentDetail && apartmentDetail.apartment?.type_slug;
+  // form - order
+  const [form] = Form.useForm();
+  const [cus_name, setUsername] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [tel, setTel] = React.useState(0);
+  const handleOnChangeUsername = React.useCallback((e) => {
+    setUsername(e.target.value);
+  }, []);
+  const handleOnChangeEmail = React.useCallback((e) => {
+    setEmail(e.target.value);
+  }, []);
+  const handleOnChangeTel = React.useCallback((e) => {
+    setTel(e.target.value);
+  }, []);
+
+  const handleOrder = React.useCallback(() => {
+    setVisibleLogin(true);
+  }, []);
+
+  //feedback
+  const [feedbackUser, setFeedbackUser] = React.useState("");
 
   React.useEffect(() => {
     const fetchData = () => {
@@ -49,28 +83,50 @@ export default function ApartmentDetailMaster() {
     fetchData();
   }, [slug, token, type_slug]);
 
-  const handleOrder = React.useCallback(() => {
-    if (login) {
-      // setVisibleNoLogin(true);
-    } else {
-      setVisibleLogin(true);
-    }
-  }, [login]);
+  //model-order
 
-  const handleOk = () => {
-    setModalText("Yêu cầu đang được xử lí...");
-    setConfirmLoading(true);
-    setTimeout(() => {
-      setVisibleLogin(false);
-      setConfirmLoading(false);
-      alert("Đặt phòng thành công. Hãy kiểm tra trạng thái đơn hàng trong trang cá nhân của bạn!")
-    }, 3000);
-    
+  const handleOk = async () => {
+    const data = { cus_name, email, tel };
+    if (!email || !tel || !cus_name) {
+      alert("Đặt phòng thất bại do bạn chưa điền đầy đủ thông tin!");
+    } else {
+      apartmentApi.order(slug, token as string, data).then((result) => {});
+      setModalText("Yêu cầu đang được xử lí...");
+      setConfirmLoading(true);
+      setTimeout(() => {
+        setVisibleLogin(false);
+        setConfirmLoading(false);
+        alert(
+          "Đặt phòng thành công. Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất!"
+        );
+      }, 3000);
+    }
   };
 
   const handleCancel = () => {
-    console.log("Clicked cancel button");
     setVisibleLogin(false);
+  };
+
+  const formItemLayout = {
+    labelCol: {
+      xs: { span: 24 },
+      sm: { span: 8 },
+    },
+    wrapperCol: {
+      xs: { span: 24 },
+      sm: { span: 16 },
+    },
+  };
+
+  //feedback
+  const handleGetFeedback = React.useCallback((e) => {
+    setFeedbackUser(e.target.value);
+  }, []);
+
+  const handleSendFeedback = async () => {
+    const data = { comment: feedbackUser };
+    apartmentApi.feedback(slug, token as string, data).then((result) => {});
+    window.location.reload();
   };
 
   return (
@@ -125,15 +181,77 @@ export default function ApartmentDetailMaster() {
                   Đặt phòng{" "}
                 </Button>
               )}
-              <Modal
-                title="Xác nhận yêu cầu đặt phòng"
-                visible={visibleLogin}
-                onOk={handleOk}
-                confirmLoading={confirmLoading}
-                onCancel={handleCancel}
-              >
-                <p>{modalText}</p>
-              </Modal>
+              {login && (
+                <Modal
+                  title="Xác nhận yêu cầu đặt phòng"
+                  visible={visibleLogin}
+                  onOk={handleOk}
+                  confirmLoading={confirmLoading}
+                  onCancel={handleCancel}
+                >
+                  <p>{modalText}</p>
+                </Modal>
+              )}
+
+              {!login && (
+                <Modal
+                  title="Điền đơn đặt phòng"
+                  visible={visibleLogin}
+                  onOk={handleOk}
+                  confirmLoading={confirmLoading}
+                  onCancel={handleCancel}
+                >
+                  <Form
+                    {...formItemLayout}
+                    form={form}
+                    name="register"
+                    onFinish={handleOk}
+                    scrollToFirstError
+                  >
+                    <Form.Item
+                      name="username"
+                      label="Họ và tên"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Nhập họ và tên!",
+                          whitespace: true,
+                        },
+                      ]}
+                    >
+                      <Input onChange={handleOnChangeUsername} />
+                    </Form.Item>
+                    <Form.Item
+                      name="email"
+                      label="E-mail"
+                      rules={[
+                        {
+                          type: "email",
+                          message: "sai định dạng Email",
+                        },
+                        {
+                          required: true,
+                          message: "Nhập Email!",
+                        },
+                      ]}
+                    >
+                      <Input onChange={handleOnChangeEmail} />
+                    </Form.Item>
+
+                    <Form.Item
+                      name="tel"
+                      label="Điện thoại"
+                      rules={[{ required: true, message: "Nhập Điện thoại" }]}
+                    >
+                      <Input
+                        style={{ width: "100%" }}
+                        onChange={handleOnChangeTel}
+                      />
+                    </Form.Item>
+                  </Form>
+                </Modal>
+              )}
+
               {!checkOrder && (
                 <Button className="dat-phong" disabled={true}>
                   Hết phòng
@@ -164,10 +282,11 @@ export default function ApartmentDetailMaster() {
             </p>
           </Col>
         </Row>
-
+        <Row></Row>
+        <ApartsDetail />
         <Row className="can-ho-cung-loai">
           <h2 className="h2-related"> CĂN HỘ CÙNG LOẠI</h2>
-          <Col className="row-related" span={24}>
+          <Col className="row-related" span={23}>
             {apartmentRelated &&
               apartmentRelated.apartments?.map((item) => {
                 return (
@@ -190,32 +309,80 @@ export default function ApartmentDetailMaster() {
           </Col>
         </Row>
 
-        {feedback &&
-          feedback.feedbacks?.map((item) => {
-            return (
-              <div className="feedback">
-                <h2 className="h2-related"> FEEDBACK</h2>
+        <div className="feedback">
+          <h2 className="h2-related"> FEEDBACK</h2>
+          {!login && (
+            <>
+              <h5 style={{ fontSize: "16px" }}>
+                <Link to={"/login"}> Đăng nhập </Link>
+                để có thể feedback
+              </h5>
+            </>
+          )}
+          {login && (
+            <>
+              <Row>
+                <Col span={3}>
+                  {" "}
+                  <img
+                    className="feedback-img"
+                    src="https://th.bing.com/th/id/OIP.C9rvxDhgD-2AYntBYUmFwgAAAA?pid=ImgDet&rs=1"
+                    alt="error"
+                    style={{ borderRadius: "70px" }}
+                  ></img>
+                </Col>
+
+                <Col span={18}>
+                  {" "}
+                  <Input
+                    style={{ fontSize: "16px", width: "100%", height: "100px" }}
+                    placeholder="Nhập đánh giá của bạn về chúng tui"
+                    type="dashed"
+                    onChange={handleGetFeedback}
+                  />
+                  <Button
+                    onClick={handleSendFeedback}
+                    style={{
+                      fontSize: "16px",
+                      width: "150px",
+                      height: "40px",
+                      color: "white",
+                      backgroundColor: "black",
+                      marginTop: "10px",
+                    }}
+                  >
+                    Gửi feedback
+                  </Button>
+                </Col>
+              </Row>
+            </>
+          )}
+          {feedback &&
+            feedback.feedbacks?.map((item) => {
+              return (
                 <div>
-                  <Row>
-                    <Col span={2}>
+                  <Row style={{ marginTop: "30px" }}>
+                    <Col span={3}>
                       {" "}
                       <img
                         className="feedback-img"
                         src={item.cus_avatar}
                         alt="error"
+                        style={{ borderRadius: "70px" }}
                       ></img>
                     </Col>
-                    <Col span={1}></Col>
-                    <Col span={15}>
-                      <h4>{item.cus_name}</h4>
-                      <h5> {item.createdAt}</h5>
-                      <h5> {item.comment}</h5>
+                    <Col span={18} style={{ fontSize: "16px" }}>
+                      <h4 style={{ fontSize: "18px", fontWeight: "bold" }}>
+                        {item.cus_name}
+                      </h4>
+                      <h5 style={{ fontSize: "14px" }}> {item.createdAt}</h5>
+                      <h5 style={{ fontSize: "14px" }}> {item.comment}</h5>
                     </Col>
                   </Row>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+        </div>
       </div>
 
       <Footer />

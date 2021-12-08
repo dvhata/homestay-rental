@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./views/User/HomeView/HomeView";
 import Login from "./views/User/LoginView/Login";
 import Register from "./views/User/RegisterView/Register";
-import Profile from "./views/User/Profile/Profile";
+import Profile from "./views/User/ProfileView/Profile";
 import AdminLogin from "./views/Admin/AdminLoginView/AdminLogin";
 import AdminRegister from "./views/Admin/AdminRegisterView/AdminRegister";
 import AdminDashboard from "./views/Admin/AdminDashboardView/AdminDashboard";

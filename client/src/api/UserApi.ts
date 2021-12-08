@@ -13,6 +13,15 @@ class UserApi {
     const url = "/users/" + slug;
     return axiosClient.get(url).then((response) => response.data);
   };
+
+  orderList = (token?: any) => {
+    const url = "/users/orders";
+    return axiosClient
+      .get(url, {
+        headers: { Authorization: token },
+      })
+      .then((response) => response.data);
+  };
 }
 
 const userApi = new UserApi();

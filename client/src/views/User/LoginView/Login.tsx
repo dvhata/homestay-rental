@@ -2,6 +2,7 @@ import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Col, Form, Input, Row } from "antd";
 import React from "react";
 import { Link } from "react-router-dom";
+import { setTimeout } from "timers";
 
 import Header from "../../../components/Header/Header";
 import axiosClient from "../../../config/axiosClient";
@@ -18,7 +19,9 @@ export default function Login() {
       localStorage.setItem("token", response.data.token);
       setLogin(response.data.success);
     });
-    isLogin ? alert("Successful") : alert("Failed");
+    setTimeout(() => {
+      isLogin ? alert("Successful") : alert("Relogin please");
+    }, 0);
   };
 
   const handleChangeEmail = React.useCallback((e) => {

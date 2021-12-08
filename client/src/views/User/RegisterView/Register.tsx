@@ -59,6 +59,7 @@ export default function Register() {
 
     axiosClient.post("/users/signup", { data }).then((response) => {
       setSignUp(response.data.message);
+      console.log(response.data)
     });
 
     isSignUp ? alert("Successful") : alert("Email đã được đăng kí");
