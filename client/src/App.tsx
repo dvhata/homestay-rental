@@ -12,6 +12,10 @@ import AdminDashboard from "./views/Admin/AdminDashboardView/AdminDashboard";
 import ApartmentMaster from "./views/User/ApartmentView/ApartmentMaster";
 import ApartmentTypeMaster from "./views/User/ApartmentTypeView/ApartmentTypeMaster";
 import ApartmentDetailMaster from "./views/User/ApartmentDetailView/ApartmentDetailMaster";
+import AdminWaitingOrder from "./views/Admin/AdminDashboardView/AdminWaitingOrder";
+import AdminStayingOrder from "./views/Admin/AdminDashboardView/AdminStayingOrder";
+import AdminConfirmedOrder from "./views/Admin/AdminDashboardView/AdminConfirmedOrder";
+import AdminProfile from "./views/Admin/AdminProfile/AdminProfile";
 
 export default function App() {
   return (
@@ -32,9 +36,13 @@ export default function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/admin-login" element={<AdminLogin />} />
             <Route path="/admin-register" element={<AdminRegister />} />
-            <Route path="admin-dashboard" element={<AdminDashboard />}>
-              <Route path=":slug" element={<AdminDashboard />} />
-            </Route>
+            <Route path="admin-dashboard" element={<AdminDashboard />}/>
+            <Route path="admin-profile" element={<AdminProfile />}/>
+            <Route path="waiting-order" element={<AdminWaitingOrder />} />
+            <Route path="staying-order" element={<AdminStayingOrder />} />
+            <Route path="confirmed-order" element={<AdminConfirmedOrder />} />
+              
+          
           </Routes>
         </Router>
       </div>

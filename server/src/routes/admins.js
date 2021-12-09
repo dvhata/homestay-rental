@@ -9,12 +9,12 @@ router.post('/orders/confirmed/search', adminMiddleware, adminController.confirm
 router.post('/edit/:slugName', adminMiddleware, adminController.editApartment);
 router.get('/delete-one/:slugName', adminMiddleware, adminController.deleteApartment);
 router.post('/add-new', adminMiddleware, adminController.addApartment);
-router.patch('/orders/:id/cancel', adminMiddleware, adminController.cancel);
-router.patch('/orders/:id/check-out', adminMiddleware, adminController.checkout);
+router.post('/orders/:id/cancel', adminMiddleware, adminController.cancel);
+router.post('/orders/:id/check-out', adminMiddleware, adminController.checkout);
 router.get('/orders/staying', adminMiddleware, adminController.staying);
-router.patch('/orders/:id/check-in', adminMiddleware, adminController.checkin);
+router.post('/orders/:id/check-in', adminMiddleware, adminController.checkin);
 router.get('/orders/confirmed', adminMiddleware, adminController.confirmed);
-router.get('/orders/:id/confirm', adminMiddleware, adminController.confirm);
+router.post('/orders/:id/confirm', adminMiddleware, adminController.confirm);
 router.get('/orders/waiting', adminMiddleware, adminController.waiting);
 router.post('/login', adminController.login);
 router.post('/signup', signupCheckMiddleware, adminController.signup);

@@ -14,8 +14,7 @@ export default function AdminLogin() {
   const onFinish = async () => {
     const data = { email, password };
     axiosClient.post("/admins/login", { data }).then((response) => {
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("admin-slug", response.data.token);
+      localStorage.setItem("admin-token", response.data.token);
       setLogin(response.data.success);
     });
     isLogin ? alert("Successful") : alert("Failed");

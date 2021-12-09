@@ -87,7 +87,7 @@ export default function ApartmentDetailMaster() {
 
   const handleOk = async () => {
     const data = { cus_name, email, tel };
-    if (!email || !tel || !cus_name) {
+    if (!token && (!email || !tel || !cus_name)) {
       alert("Đặt phòng thất bại do bạn chưa điền đầy đủ thông tin!");
     } else {
       apartmentApi.order(slug, token as string, data).then((result) => {});
@@ -204,7 +204,6 @@ export default function ApartmentDetailMaster() {
                   <Form
                     {...formItemLayout}
                     form={form}
-                    name="register"
                     onFinish={handleOk}
                     scrollToFirstError
                   >

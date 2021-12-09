@@ -22,6 +22,31 @@ class UserApi {
       })
       .then((response) => response.data);
   };
+  edit = (slug?: string, token?: string, data?: any) => {
+    const url = "/users/" + slug + "/edit";
+    return axiosClient
+      .post(
+        url,
+        { data },
+        {
+          headers: { Authorization: token as string },
+        }
+      )
+      .then((response) => response.data);
+  };
+
+  cancel = (token?: any, id?: string) => {
+    const url = "/users/orders/" + id + "/cancel";
+    return axiosClient
+      .post(
+        url,
+        {},
+        {
+          headers: { Authorization: token },
+        }
+      )
+      .then((response) => response.data);
+  };
 }
 
 const userApi = new UserApi();

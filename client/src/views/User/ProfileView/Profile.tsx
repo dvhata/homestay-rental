@@ -1,7 +1,7 @@
 import "./Profile.scss";
 
-import { Button, Col, Form, Input, Modal, Row, Space, Table, Tag } from "antd";
-import React, { useState } from "react";
+import { Button, Col, Form, Input, Modal, Popconfirm, Row, Tag } from "antd";
+import React from "react";
 import { Link } from "react-router-dom";
 
 import userApi from "../../../api/UserApi";
@@ -10,7 +10,6 @@ import Header from "../../../components/Header/Header";
 import { AuthToken } from "../../../models/AuthToken/AuthToken";
 import { User } from "../../../models/User/User";
 import { Order } from "./../../../models/Order/Order";
-import confirm from "antd/lib/modal/confirm";
 
 const formItemLayout = {
   labelCol: {
@@ -22,30 +21,26 @@ const formItemLayout = {
     sm: { span: 16 },
   },
 };
-const tailFormItemLayout = {
-  wrapperCol: {
-    xs: {
-      span: 24,
-      offset: 0,
-    },
-    sm: {
-      span: 16,
-      offset: 8,
-    },
-  },
-};
 
 export default function Profile() {
   const [authToken, setAuthToken] = React.useState<AuthToken>();
   const [profile, setProfile] = React.useState<User>();
   const [orderList, setOrderList] = React.useState<Order>();
   const token = localStorage.getItem("token");
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const [username, setUsername] = React.useState("");
   const [email, setEmail] = React.useState("");
-  const [tel, setTel] = React.useState(0);
+  const [tel, setTel] = React.useState("");
   const [address, setAddress] = React.useState("");
   const [form] = Form.useForm();
+
+  // setUsername(profile?.user?.username as string);
+  // setEmail(profile?.user?.email as string);
+  // setAddress(profile?.user?.address as string);
+  // setTel(profile?.user?.tel as string);
+
+  //modal
+  const [visibleLogin, setVisibleLogin] = React.useState(false);
+  const [confirmLoading, setConfirmLoading] = React.useState(false);
 
   const handleOnChangeUsername = React.useCallback((e) => {
     setUsername(e.target.value);
@@ -60,19 +55,33 @@ export default function Profile() {
     setAddress(e.target.value);
   }, []);
 
-  //modal
+  //modal edit
 
   const showModal = () => {
-    setIsModalVisible(true);
+    setVisibleLogin(true);
   };
 
-  const handleOk = () => {
-    setIsModalVisible(false);
+  const handleOk = async () => {
+    localStorage.removeItem("token");
+    const data = { username, tel, email, address };
+    userApi.edit(slug, token as string, data).then((result) => {});
+    setConfirmLoading(true);
+    window.location.reload();
   };
 
   const handleCancel = () => {
-    setIsModalVisible(false);
+    setVisibleLogin(false);
   };
+
+  // cancel order
+  const handleCancelOrder = async (e: any) => {
+    console.log(e.target.value);
+    userApi.cancel(token as string, e.target.value).then((result) => {});
+    setConfirmLoading(true);
+    window.location.reload();
+  };
+
+  // log out
 
   const handleLogOut = React.useCallback(() => {
     localStorage.removeItem("token");
@@ -92,62 +101,23 @@ export default function Profile() {
     fetchData();
   }, [slug, token]);
 
-  //table order list
-
-  const columns = [
-    {
-      title: "Tên căn hộ",
-      dataIndex: "apartment_name",
-      render: (text: "Tên căn hộ") => <Link to="/">{text}</Link>,
-    },
-    {
-      title: "Giá tiền",
-      dataIndex: "price",
-    },
-    {
-      title: "Thời gian đặt",
-      dataIndex: "order_date",
-    },
-    {
-      title: "Tình trạng",
-      dataIndex: "status",
-      render: (status: any) => (
-        <>
-          {status === null ? (
-            <Tag color="yellow">Chờ xác nhận</Tag>
-          ) : (
-            <Tag color="blue">Đã xác nhận</Tag>
-          )}
-          {/* Đang thuê */}
-        </>
-      ),
-    },
-    {
-      title: "",
-      key: "action",
-      render: () => (
-        <Space size="middle">
-          <Button>Hủy đặt </Button>
-        </Space>
-      ),
-    },
-  ];
-
-  const data = orderList?.orders;
-
   return (
     <div>
       <Header />
       {!login && (
         <div>
-          <h1>Chua dang nhap</h1>
+          <h1>WARNING: Chưa đăng nhập</h1>
         </div>
       )}
       {login && (
         <div className="profile-container">
           <Row>
             <Col span={10}>
-              <img src={profile?.user?.avatar} alt="error" />
+              <img
+                style={{ width: "400px", height: "300px" }}
+                src={profile?.user?.avatar}
+                alt="error"
+              />
             </Col>
             <Col span={10}>
               <h2
@@ -193,14 +163,56 @@ export default function Profile() {
               </Button>
             </Col>
           </Row>
-          <Row style={{ marginTop: "50px" }} className="can-ho-cung-loai">
+          <Row
+            style={{ marginTop: "50px", width: "90%" }}
+            className="can-ho-cung-loai"
+          >
             <h2 className="h2-related"> CĂN HỘ ĐÃ ĐẶT</h2>
-            <Table columns={columns} dataSource={data} />
+            <table>
+              <tr>
+                <th>Tên căn hộ</th>
+                <th>Giá tiền</th>
+                <th>Thời gian đặt</th>
+                <th>Tình trạng đặt</th>
+                <th></th>
+              </tr>
+
+              {orderList?.orders?.map((item) => {
+                return (
+                  <tr key={item._id}>
+                    <td>
+                      <Link to={`/apartment-detail/${item.apartment_slug}`}>
+                        {item.apartment_name}
+                      </Link>
+                    </td>
+                    <td>{item.price}</td>
+                    <td>{item.order_date}</td>
+                    <td>
+                      {!item.status && <Tag color="#2db7f5">waiting</Tag>}
+                      {item.status && item.status === "canceled" && (
+                        <Tag color="#f50">{item.status}</Tag>
+                      )}
+                      {item.status && item.status === "staying" && (
+                        <Tag color="#108ee9">{item.status}</Tag>
+                      )}
+                    </td>
+                    <td>
+                      {!item.status && (
+                        <button value={item._id} onClick={handleCancelOrder}>
+                          Hủy đặt
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
+            </table>
           </Row>
           <Modal
             title="Chỉnh sửa thông tin cá nhân"
-            visible={isModalVisible}
+            visible={visibleLogin}
             onOk={handleOk}
+            confirmLoading={confirmLoading}
             onCancel={handleCancel}
           >
             <Form
@@ -221,8 +233,10 @@ export default function Profile() {
                   },
                 ]}
               >
-                <Input onChange={handleOnChangeUsername} />{" "}
-                {profile?.user?.username}
+                <Input
+                  defaultValue={profile?.user?.username}
+                  onChange={handleOnChangeUsername}
+                />{" "}
               </Form.Item>
 
               <Form.Item
@@ -239,7 +253,10 @@ export default function Profile() {
                   },
                 ]}
               >
-                <Input onChange={handleOnChangeEmail} /> {profile?.user?.email}
+                <Input
+                  defaultValue={profile?.user?.email}
+                  onChange={handleOnChangeEmail}
+                />
               </Form.Item>
 
               <Form.Item
@@ -247,8 +264,11 @@ export default function Profile() {
                 label="Điện thoại"
                 rules={[{ required: true, message: "Nhập Điện thoại" }]}
               >
-                <Input style={{ width: "100%" }} onChange={handleOnChangeTel} />{" "}
-                {profile?.user?.tel}
+                <Input
+                  defaultValue={profile?.user?.tel}
+                  style={{ width: "100%" }}
+                  onChange={handleOnChangeTel}
+                />{" "}
               </Form.Item>
 
               <Form.Item
@@ -262,8 +282,10 @@ export default function Profile() {
                   },
                 ]}
               >
-                <Input onChange={handleOnChangeAddress} />
-                {profile?.user?.address}
+                <Input
+                  defaultValue={profile?.user?.address}
+                  onChange={handleOnChangeAddress}
+                />
               </Form.Item>
             </Form>
           </Modal>

@@ -25,6 +25,7 @@ export default function ApartmentMaster() {
 
   let { slug } = useParams();
 
+
   const handleGoDetail = React.useCallback((e) => {
     let temp = e.target.value;
     setApartmentSlug(temp);
@@ -34,6 +35,7 @@ export default function ApartmentMaster() {
   React.useEffect(() => {
     const fetchData = () => {
       apartmentApi.list().then((result: Apartment) => {
+       
         setData(result);
       });
       apartmentApi.sort(sortType).then((result: Apartment) => {
@@ -191,9 +193,14 @@ export default function ApartmentMaster() {
                               className="card-apartment"
                               title={`${ap.name} -  ${ap.price}`}
                             >
-                              <button value={ap.slug} onClick={handleGoDetail}>
-                                Xem them
-                              </button>
+                              <Link to={`/apartment-detail/${ap.slug}`}>
+                                <button
+                                  value={ap.slug}
+                                  onClick={handleGoDetail}
+                                >
+                                  Xem thêm
+                                </button>
+                              </Link>
                               {ap.images?.slice(0, 2).map((item) => {
                                 return (
                                   <>
