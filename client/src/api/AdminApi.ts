@@ -58,6 +58,19 @@ class AdminApi {
       .then((response) => response.data);
   };
 
+  edit = (token?: string, slug?: any, data?: any) => {
+    const url = "/admins/edit/" + slug;
+    return axiosClient
+      .post(
+        url,
+        { data },
+        {
+          headers: { Authorization: token as string },
+        }
+      )
+      .then((response) => response.data);
+  };
+
   delete = (token?: any, slug?: string) => {
     const url = "/admins/delete-one/" + slug;
     return axiosClient

@@ -2,10 +2,10 @@ import React from "react";
 
 export default function ApartsDetail() {
   return (
-    <div>
-      <h4>Chi tiết</h4>
+    <div className="feedback">
+      <h2 className="h2-related" >CHI TIẾT</h2>
       <p style={{ textAlign: "justify" }}>
-        <span style={{ fontSize: "100%" }}>
+        <span style={{ fontSize: "16px" }}>
           Cú Trên Cây Homestay có vị trí địa lý và đặc điểm đặc biệt so với các
           nơi ở khác nên bạn cần chú ý một vài lưu ý dưới đây:
           <br></br>
@@ -13,7 +13,7 @@ export default function ApartsDetail() {
       </p>
       <ul style={{ textAlign: "justify" }}>
         <li>
-          <span style={{ fontSize: "100%" }}>
+          <span style={{ fontSize: "16px" }}>
             Home cách trung tâm Đà Lạt khoảng 2km, sân bay Liên Khương khoảng
             28km. Tuy nhiên home ở lưng chừng đồi, có dốc và nhiều bậc thang
             nhưng an toàn. NẾU NGẠI DI CHUYỂN VÀ CÓ NHIỀU HÀNH LÝ NẶNG, bạn hãy
@@ -21,25 +21,25 @@ export default function ApartsDetail() {
           </span>
         </li>
         <li>
-          <span style={{ fontSize: "100%" }}>
+          <span style={{ fontSize: "16px" }}>
             Trả tổ trước 12h, nhận tổ sau 14h. Luôn trở về tổ trước 23h để đảm
             bảo an toàn và giữ gìn sự yên tĩnh cho cả làng chim.
           </span>
         </li>
         <li>
-          <span style={{ fontSize: "100%" }}>
+          <span style={{ fontSize: "16px" }}>
             Hạn chế âm lượng khi dùng loa nghe nhạc và sinh hoạt cá nhân (đi
             lại, nói chuyện to tiếng..)
           </span>
         </li>
         <li>
-          <span style={{ fontSize: "100%" }}>
+          <span style={{ fontSize: "16px" }}>
             Home trồng nhiều cây xanh và nuôi nhiều chó mèo.
           </span>
         </li>
       </ul>
       <p>
-        <span style={{ fontSize: "100%" }}>
+        <span style={{ fontSize: "16px" }}>
           Đến với Cú Trên Cây Homestay Cú khách có nhiều không gian sử dụng khác
           bao gồm:
         </span>
@@ -60,7 +60,7 @@ export default function ApartsDetail() {
       <p style={{ textAlign: "justify" }}>
         Toilet chung có tận 4 phòng, chỉ cách tổ vài bước chân và được kiểm tra
         vệ sinh thường xuyên nên rất sạch sẽ và khô ráo. Được t
-        <span style={{ fontSize: "100%" }}>
+        <span style={{ fontSize: "16px" }}>
           rang bị đầy đủ máy nước nóng, khăn tắm, máy sấy tóc, dầu gội, xà
           phòng, kem đánh răng, kem chống muỗi, Khách lưu trú chỉ cần đem theo
           bàn chải đánh răng.
@@ -85,7 +85,7 @@ export default function ApartsDetail() {
         />
       </p>
       <p style={{ textAlign: "justify" }}>
-        <span style={{ fontSize: "100%" }}>
+        <span style={{ fontSize: "16px" }}>
           Cú Trên Cây Homestay có nhiều khu sinh hoạt để Cú khách nghỉ ngơi, làm
           việc, đọc sách, hòa mình vào thiên nhiên.
         </span>
@@ -115,7 +115,7 @@ export default function ApartsDetail() {
       <p>&nbsp;</p>
       <p style={{ textAlign: "center" }}>
         <img
-          style={{ height: "229px", width: "344px" }}
+          style={{height: "229px", width: "344px" }}
           src="https://cutrencay.com/wp-content/uploads/2020/08/bepchung-scaled-e1632488566429-600x400.jpg"
           alt=""
         />
@@ -132,7 +132,7 @@ export default function ApartsDetail() {
       </p>
       <p style={{ textAlign: "justify" }}>
         Bếp chung rộng rãi, có m
-        <span style={{ fontSize: "100%" }}>
+        <span style={{ fontSize: "16px" }}>
           ì gói, trà, cà phê, trứng miễn phí cho bữa sáng, đầy đủ đồ dùng và gia
           vị cần thiết,{" "}
         </span>
@@ -140,7 +140,7 @@ export default function ApartsDetail() {
       </p>
       <p>&nbsp;</p>
       <p style={{ textAlign: "justify" }}>
-        <span style={{ fontSize: "100%" }}>
+        <span style={{ fontSize: "16px" }}>
           <strong>
             Để biết thêm thông tin chi tiết và đặt phòng nhanh chóng bạn vui
             lòng liên hệ HOTLINE{" "}

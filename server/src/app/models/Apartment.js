@@ -13,7 +13,7 @@ const Apartment = new Schema(
         price: {type: Number},
         description: {type: String},
         slug: { type: String, slug: 'name', unique: true },
-        ultilities_img : {type: String},
+        ultilities_img : {type: String, default:"https://cutrencay.com/wp-content/uploads/2020/08/motasoc-800x332.jpg"},
         images: {type: Array},
         type_slug: {type: String},
         detail: {type: String, default: aparment_detail},

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-undef */
 import {
   Breadcrumb,
   Button,
@@ -10,6 +11,7 @@ import {
 } from "antd";
 import React from "react";
 import { Link } from "react-router-dom";
+import NumberFormat from "react-number-format";
 
 import apartmentApi from "../../../api/ApartmentApi";
 import userApi from "../../../api/UserApi";
@@ -130,12 +132,10 @@ export default function ApartmentDetailMaster() {
   };
 
   return (
-    <div>
+    <div className="apartment-detail-containerr">
       <Header />
       <div className="apartment-detail-container">
-        <Breadcrumb
-          style={{ margin: "16px 20px", marginTop: 50, marginBottom: 0 }}
-        >
+        <Breadcrumb style={{ marginLeft: 10, marginTop: 50, marginBottom: 0 }}>
           <Breadcrumb.Item>
             <Link to="/"> Bird's net</Link>
           </Breadcrumb.Item>
@@ -162,7 +162,7 @@ export default function ApartmentDetailMaster() {
                 })}
             </Carousel>
           </Col>
-          <Col span={10}>
+          <Col span={14}>
             <h2
               style={{
                 fontWeight: "bold",
@@ -259,7 +259,12 @@ export default function ApartmentDetailMaster() {
             </h2>
             <p style={{ fontSize: "16px" }}>
               Giá:
-              {apartmentDetail && apartmentDetail.apartment?.price}
+              <NumberFormat
+                value={apartmentDetail && apartmentDetail.apartment?.price}
+                displayType={"text"}
+                thousandSeparator={true}
+              />
+              đ
             </p>
             <p style={{ fontSize: "16px" }}>
               Diện tích:
@@ -290,7 +295,6 @@ export default function ApartmentDetailMaster() {
               apartmentRelated.apartments?.map((item) => {
                 return (
                   <div className="col-related">
-                    <h4>{item.name}</h4>
                     {item.images?.slice(0, 1).map((image) => {
                       return (
                         <>
@@ -302,6 +306,7 @@ export default function ApartmentDetailMaster() {
                         </>
                       );
                     })}
+                    <h4 style={{ textAlign: "center", fontSize: "16px", fontWeight: "bold" }}>{item.name}</h4>
                   </div>
                 );
               })}
@@ -325,7 +330,7 @@ export default function ApartmentDetailMaster() {
                   {" "}
                   <img
                     className="feedback-img"
-                    src="https://th.bing.com/th/id/OIP.C9rvxDhgD-2AYntBYUmFwgAAAA?pid=ImgDet&rs=1"
+                    src="https://iupac.org/wp-content/uploads/2018/05/default-avatar.png"
                     alt="error"
                     style={{ borderRadius: "70px" }}
                   ></img>

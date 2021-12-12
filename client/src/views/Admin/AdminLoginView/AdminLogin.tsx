@@ -1,15 +1,17 @@
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input } from "antd";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import axiosClient from "../../../config/axiosClient";
-import "./AdminLogin.scss"
+import "./AdminLogin.scss";
 
 export default function AdminLogin() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [isLogin, setLogin] = React.useState();
+
+  const navigate = useNavigate();
 
   const onFinish = async () => {
     const data = { email, password };
@@ -17,7 +19,10 @@ export default function AdminLogin() {
       localStorage.setItem("admin-token", response.data.token);
       setLogin(response.data.success);
     });
-    isLogin ? alert("Successful") : alert("Failed");
+    if (isLogin) {
+      alert("Successful");
+      navigate("/admin-dashboard");
+    }
   };
 
   const handleChangeEmail = React.useCallback((e) => {
@@ -36,7 +41,6 @@ export default function AdminLogin() {
         name="normal_login"
         initialValues={{ remember: true }}
         onFinish={onFinish}
-        
       >
         <Form.Item
           name="Email"
@@ -64,7 +68,7 @@ export default function AdminLogin() {
             <Checkbox>Nhớ tôi</Checkbox>
           </Form.Item>
 
-          <Link to="/register">Quên mật khẩu</Link>
+          <Link to="/admin-register">Quên mật khẩu</Link>
         </Form.Item>
 
         <Form.Item>
@@ -76,7 +80,6 @@ export default function AdminLogin() {
             Đăng nhập
           </Button>
         </Form.Item>
-        <Link className="admin-login-link" to="/admin-dashboard">Dashboard </Link>
       </Form>
     </div>
   );

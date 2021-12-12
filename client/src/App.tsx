@@ -36,13 +36,13 @@ export default function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/admin-login" element={<AdminLogin />} />
             <Route path="/admin-register" element={<AdminRegister />} />
-            <Route path="admin-dashboard" element={<AdminDashboard />}/>
-            <Route path="admin-profile" element={<AdminProfile />}/>
+            <Route path="admin-dashboard" element={<AdminDashboard />}>
+              <Route path=":slug" element={<AdminDashboard />} />
+            </Route>
+            <Route path="admin-profile" element={<AdminProfile />} />
             <Route path="waiting-order" element={<AdminWaitingOrder />} />
             <Route path="staying-order" element={<AdminStayingOrder />} />
             <Route path="confirmed-order" element={<AdminConfirmedOrder />} />
-              
-          
           </Routes>
         </Router>
       </div>

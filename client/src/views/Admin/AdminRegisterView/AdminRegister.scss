@@ -1,20 +1,24 @@
 .admin-register-container {
-    
     margin-top: -50px;
     padding: 0;
-    background-color: #1890ff;
+    background-color: #188fff59;
 }
 .admin-register {
-    width: 80%;
-    background-color: #1890ff;
+    margin: 0;
+    width: 100%;
 }
 
 .admin-title {
-    background-color: #1890ff;
+    background-color: rgb(187, 32, 32);
     margin:0 px;
-    margin-top: 50px;
-    margin-bottom: 50px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  
     text-align: center;
+    h1 {
+        margin:0px;
+        color:white;
+    }
 }
 
 .admin-register-link {

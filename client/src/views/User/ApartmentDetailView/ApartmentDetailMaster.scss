@@ -1,8 +1,15 @@
 .apartment-detail-container {
-  margin: 3.5%;
+  // 
+  padding: 5%;
+  padding-top:10px;
+  background-color: white;
+  margin-left:5%;
+  margin-top: 50px;
+
 }
 .dat-phong {
-  margin-left: 10%;
+  margin-left: 5%;
+  padding-bottom: 20px;
   background-color: #51784f;
   width: 150px;
   height: 44px;
@@ -26,4 +33,8 @@
   margin-left: 0px;
   margin-top: 0;
   margin-bottom: 20px;
+}
+
+.apartment-detail-containerr {
+  width: 1400px;
 }

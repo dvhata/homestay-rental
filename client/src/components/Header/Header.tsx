@@ -1,17 +1,15 @@
-import "./Header.scss";
-import { Button, Col, Dropdown, Menu, Row } from "antd";
-import React from "react";
-import { Link } from "react-router-dom";
-import userApi from "../../api/UserApi";
-import { AuthToken } from "../../models/AuthToken/AuthToken";
+import './Header.scss';
+
+import { Button, Col, Row } from 'antd';
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+import userApi from '../../api/UserApi';
+import { AuthToken } from '../../models/AuthToken/AuthToken';
 
 export default function Header() {
   const [authToken, setAuthToken] = React.useState<AuthToken>();
   const token = localStorage.getItem("token");
-
-  const handleLogOut = React.useCallback(() => {
-    localStorage.removeItem("token");
-  }, []);
 
   const login = authToken?.login;
   const username = authToken?.username;
@@ -24,7 +22,7 @@ export default function Header() {
   }, [token]);
 
   return (
-    <div>
+    <div className="header">
       <Row>
         <Col span={3}>
           <Link className="link" to="/">
@@ -57,12 +55,12 @@ export default function Header() {
             {!login && (
               <>
                 {" "}
-                <Link className="link" to="/login">
-                  Đăng nhập
+                <Link className="link" to="/register">
+                Đăng ký
                 </Link>
                 <Button className="button-link" type="dashed">
-                  <Link className="link" to="/register">
-                    Đăng ký
+                  <Link className="link" to="/login">
+                    Đăng nhập
                   </Link>
                 </Button>
               </>
@@ -73,14 +71,6 @@ export default function Header() {
                 <Link className="link" to="/profile">
                   Xin chao, {username}!
                 </Link>
-                {/* <Button
-                  type="dashed"
-                  onClick={handleLogOut}
-                >
-                  <Link className="link" to="/">
-                    Dang xuat
-                  </Link>
-                </Button> */}
               </>
             )}
           </div>

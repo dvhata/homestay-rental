@@ -1,30 +1,31 @@
-import "./ApartmentMaster.scss";
+import './ApartmentMaster.scss';
 
-import { Breadcrumb, Button, Card, Col, Input, Layout, Menu, Row } from "antd";
-import { Content } from "antd/lib/layout/layout";
-import Sider from "antd/lib/layout/Sider";
-import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { Breadcrumb, Button, Card, Col, Input, Layout, Menu, Row } from 'antd';
+import { Content } from 'antd/lib/layout/layout';
+import Sider from 'antd/lib/layout/Sider';
+import Title from 'antd/lib/typography/Title';
+import React from 'react';
+import NumberFormat from 'react-number-format';
+import { Link, useParams } from 'react-router-dom';
 
-import apartmentApi from "../../../api/ApartmentApi";
-import apartmentTypeApi from "../../../api/ApartmentTypeApi";
-import Header from "../../../components/Header/Header";
-import { Apartment } from "../../../models/Apartment/Apartment";
-import { ApartmentType } from "../../../models/ApartmentType/ApartmentType";
-import axiosClient from "../../../config/axiosClient";
+import apartmentApi from '../../../api/ApartmentApi';
+import apartmentTypeApi from '../../../api/ApartmentTypeApi';
+import Footer from '../../../components/Footer/Footer';
+import Header from '../../../components/Header/Header';
+import axiosClient from '../../../config/axiosClient';
+import { Apartment } from '../../../models/Apartment/Apartment';
+import { ApartmentType } from '../../../models/ApartmentType/ApartmentType';
 
 export default function ApartmentMaster() {
+  const [countApartment,setCountApartment] = React.useState();
   const [data, setData] = React.useState<Apartment>();
   const [apartmentType, setApartmentType] = React.useState<ApartmentType>();
   const [apartment, setApartment] = React.useState<Apartment>();
   const [apartmentSlug, setApartmentSlug] = React.useState("");
-  const [countApartment, setCountApartment] = React.useState();
   const [sortType, setSortType] = React.useState("");
   const [apartmentSort, setApartmentSort] = React.useState<Apartment>();
-  const [apartmentSearch, setApartmentSearch] = React.useState<Apartment>();
 
   let { slug } = useParams();
-
 
   const handleGoDetail = React.useCallback((e) => {
     let temp = e.target.value;
@@ -35,15 +36,14 @@ export default function ApartmentMaster() {
   React.useEffect(() => {
     const fetchData = () => {
       apartmentApi.list().then((result: Apartment) => {
-       
         setData(result);
       });
       apartmentApi.sort(sortType).then((result: Apartment) => {
         setApartmentSort(result);
       });
-      apartmentApi.count().then((result) => {
-        setCountApartment(result.count);
-      });
+      apartmentApi.count().then ((result) => {
+        setCountApartment(result.count)
+      })
 
       apartmentTypeApi.list().then((result: ApartmentType) => {
         setApartmentType(result);
@@ -80,7 +80,7 @@ export default function ApartmentMaster() {
   return (
     <div>
       <Header />
-      <Row className="container">
+      <Row className="apartment-container">
         <Col span={5}>
           <Sider className="site-layout-background">
             <Menu
@@ -90,15 +90,21 @@ export default function ApartmentMaster() {
               style={{ height: "100%", borderRight: 0 }}
             >
               <>
-                <Button className="button-control" type="dashed">
-                  <Link to="">TẤT CẢ</Link>
-                </Button>
+                <Link to="">
+                  <Button className="button-control" type="dashed">
+                    TẤT CẢ
+                  </Button>
+                </Link>
+
                 {apartmentType?.apartment_types?.map((item, id) => {
                   return (
                     <div key={item._id}>
-                      <Button className="button-control" type="dashed">
-                        <Link to={`${item.slug}`}>{item.name}</Link>
-                      </Button>
+                      <Link to={`${item.slug}`}>
+                        {" "}
+                        <Button className="button-control" type="dashed">
+                          {item.name}{" "}
+                        </Button>
+                      </Link>
                     </div>
                   );
                 })}
@@ -106,7 +112,7 @@ export default function ApartmentMaster() {
             </Menu>
           </Sider>
         </Col>
-        <Col span={15}>
+        <Col span={19}>
           {" "}
           <Layout style={{ padding: "0 24px 24px" }}>
             <Breadcrumb
@@ -116,7 +122,7 @@ export default function ApartmentMaster() {
               <Breadcrumb.Item>Loai can ho</Breadcrumb.Item>
               <Breadcrumb.Item>{slug || "tat-ca"}</Breadcrumb.Item>
             </Breadcrumb>
-            <div style={{ marginLeft: "39%" }}>
+            <div style={{ paddingLeft: "45%" }}>
               {" "}
               <Search
                 placeholder="Nhập tên căn hộ"
@@ -142,7 +148,8 @@ export default function ApartmentMaster() {
               {!slug && (
                 <>
                   <h5 className="so-luong">
-                    Hien thi: {countApartment} / {countApartment}{" "}
+                    Hien thi: {data?.apartments?.length} /{" "}
+                    {countApartment}{" "}
                   </h5>
                   <>
                     {data &&
@@ -152,10 +159,21 @@ export default function ApartmentMaster() {
                             <>
                               <Card
                                 className="card-apartment"
-                                title={`${item.name} -  ${item.price}`}
+                                title={
+                                  <Title level={2}>
+                                    {item.name + " - "}
+                                    <NumberFormat
+                                      value={item.price && item.price}
+                                      displayType={"text"}
+                                      thousandSeparator={true}
+                                    />
+                                    {"đ "}
+                                  </Title>
+                                }
                               >
                                 <Link to={`/apartment-detail/${item.slug}`}>
                                   <button
+                                    className="xem-them"
                                     value={item.slug}
                                     onClick={handleGoDetail}
                                   >
@@ -191,10 +209,21 @@ export default function ApartmentMaster() {
                           <>
                             <Card
                               className="card-apartment"
-                              title={`${ap.name} -  ${ap.price}`}
+                              title={
+                                <Title level={2}>
+                                  {ap.name + " - "}
+                                  <NumberFormat
+                                    value={ap.price && ap.price}
+                                    displayType={"text"}
+                                    thousandSeparator={true}
+                                  />
+                                  {"đ "}
+                                </Title>
+                              }
                             >
                               <Link to={`/apartment-detail/${ap.slug}`}>
                                 <button
+                                  className="xem-them"
                                   value={ap.slug}
                                   onClick={handleGoDetail}
                                 >
@@ -219,22 +248,11 @@ export default function ApartmentMaster() {
                     })}
                 </div>
               )}
-
-              {/* {slug === undefined && (
-                <div>
-                  <h5 className="so-luong">
-                    Hien thi: {countApartment} / {countApartment}{" "}
-                  </h5>
-                  {apartment &&
-                    apartment.apartments?.map((ap) => {
-                      return <div key={ap._id}></div>;
-                    })}
-                </div>
-              )} */}
             </Content>
           </Layout>
         </Col>
       </Row>
+      <Footer />
     </div>
   );
 }

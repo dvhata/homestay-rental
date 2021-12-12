@@ -2,29 +2,29 @@ import { Button, Col, Row } from "antd";
 import React from "react";
 import { Link } from "react-router-dom";
 import adminApi from "../../../api/AdminApi";
+import { Admin } from "../../../models/Admin/Admin";
 import { AuthToken } from "../../../models/AuthToken/AuthToken";
-import { User } from "../../../models/User/User";
 
 export default function AdminProfile() {
   const [authToken, setAuthToken] = React.useState<AuthToken>();
-  const [profile, setProfile] = React.useState<User>();
-  const adminToken = localStorage.getItem("admin-token");
+  const [profile, setProfile] = React.useState<Admin>();
+  const token = localStorage.getItem("admin-token");
   
   const handleLogOut = React.useCallback(() => {
     localStorage.removeItem("admin-token");
   }, []);
 
   const slug = authToken?.slug;
-  console.log(adminToken)
+  console.log(slug)
   React.useEffect(() => {
     function fetchData() {
-      adminApi.authentication(adminToken).then((result) => setAuthToken(result));
-      adminApi.get(adminToken, slug).then((result: User) => {
+      adminApi.authentication(token).then((result) => setAuthToken(result));
+      adminApi.get(token, slug).then((result: Admin) => {
         setProfile(result);
       });
     }
     fetchData();
-  }, [slug, adminToken]);
+  }, [slug, token]);
 
   return (
     <div>
@@ -46,19 +46,19 @@ export default function AdminProfile() {
               borderBottom: "1px solid black",
             }}
           >
-            {profile?.user?.username}
+            {profile?.admin?.username}
           </h2>
           <p style={{ fontSize: "16px", marginTop: "30px" }}>
             Email:
-            {profile?.user?.email}
+            {profile?.admin?.email}
           </p>
           <p style={{ fontSize: "16px", marginTop: "30px" }}>
             Điện thoại:
-            {profile?.user?.tel}
+            {profile?.admin?.tel}
           </p>
           <p style={{ fontSize: "16px", marginTop: "30px" }}>
             Địa chỉ:
-            {profile?.user?.address}
+            {profile?.admin?.address}
           </p>
           <Button
             className="profile-dang-xuat"

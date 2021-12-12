@@ -1,7 +1,16 @@
 import "./Profile.scss";
 
-import { Button, Col, Form, Input, Modal, Popconfirm, Row, Tag } from "antd";
+import {
+  CheckCircleOutlined,
+  ClockCircleOutlined,
+  ExclamationCircleOutlined,
+  MinusCircleOutlined,
+  SyncOutlined,
+} from "@ant-design/icons";
+import { Button, Col, Form, Input, Modal, Row, Tag } from "antd";
 import React from "react";
+import Moment from "react-moment";
+import NumberFormat from "react-number-format";
 import { Link } from "react-router-dom";
 
 import userApi from "../../../api/UserApi";
@@ -62,10 +71,10 @@ export default function Profile() {
   };
 
   const handleOk = async () => {
-    localStorage.removeItem("token");
     const data = { username, tel, email, address };
     userApi.edit(slug, token as string, data).then((result) => {});
     setConfirmLoading(true);
+    alert("Thay doi thong tin thanh cong!");
     window.location.reload();
   };
 
@@ -91,6 +100,10 @@ export default function Profile() {
   const login = authToken?.login;
 
   React.useEffect(() => {
+    setUsername(profile?.user?.username as string);
+    setEmail(profile?.user?.email as string);
+    setAddress(profile?.user?.address as string);
+    setTel(profile?.user?.tel as string);
     function fetchData() {
       userApi.authentication(token).then((result) => setAuthToken(result));
       userApi.get(slug).then((result: User) => {
@@ -99,7 +112,15 @@ export default function Profile() {
       userApi.orderList(token).then((result) => setOrderList(result));
     }
     fetchData();
-  }, [slug, token]);
+  }, [
+    profile?.user?.address,
+    profile?.user?.email,
+    profile?.user?.tel,
+    profile?.user?.username,
+    slug,
+    token,
+  ]);
+  let count = 1;
 
   return (
     <div>
@@ -170,9 +191,12 @@ export default function Profile() {
             <h2 className="h2-related"> CĂN HỘ ĐÃ ĐẶT</h2>
             <table>
               <tr>
+                <th>STT</th>
                 <th>Tên căn hộ</th>
                 <th>Giá tiền</th>
-                <th>Thời gian đặt</th>
+                <th>Ngày đặt phòng</th>
+                <th>Ngày thuê phòng</th>
+                <th>Ngày trả phòng</th>
                 <th>Tình trạng đặt</th>
                 <th></th>
               </tr>
@@ -180,21 +204,85 @@ export default function Profile() {
               {orderList?.orders?.map((item) => {
                 return (
                   <tr key={item._id}>
+                    <td>{count++}</td>
+                    <td>{item.apartment_name}</td>
                     <td>
-                      <Link to={`/apartment-detail/${item.apartment_slug}`}>
-                        {item.apartment_name}
-                      </Link>
+                      <NumberFormat
+                        value={item.price}
+                        displayType={"text"}
+                        thousandSeparator={true}
+                      />
+                      {"đ "}
                     </td>
-                    <td>{item.price}</td>
-                    <td>{item.order_date}</td>
                     <td>
-                      {!item.status && <Tag color="#2db7f5">waiting</Tag>}
+                      {" "}
+                      {item.order_date && (
+                        <Moment
+                          date={item.order_date}
+                          format="DD/MM/YYYY"
+                        ></Moment>
+                      )}
+                    </td>
+                    <td>
+                      {" "}
+                      {item.check_in_date && (
+                        <Moment
+                          date={item.check_in_date}
+                          format="DD/MM/YYYY"
+                        ></Moment>
+                      )}
+                      {!item.check_in_date && "---"}
+                    </td>
+                    <td>
+                      {item.return_date && (
+                        <Moment
+                          date={item.return_date}
+                          format="DD/MM/YYYY"
+                        ></Moment>
+                      )}
+                      {!item.check_in_date && "---"}
+                    </td>
+                    <td>
+                      {!item.status && (
+                        <Tag icon={<ClockCircleOutlined />} color="default">
+                          Chờ xác nhận
+                        </Tag>
+                      )}
                       {item.status && item.status === "canceled" && (
-                        <Tag color="#f50">{item.status}</Tag>
+                        <Tag icon={<MinusCircleOutlined />} color="error">
+                          Bị hủy
+                        </Tag>
                       )}
-                      {item.status && item.status === "staying" && (
-                        <Tag color="#108ee9">{item.status}</Tag>
-                      )}
+
+                      {item.status &&
+                        item.status === "confirmed" &&
+                        !item.check_in_date &&
+                        !item.return_date && (
+                          <Tag
+                            icon={<ExclamationCircleOutlined />}
+                            color="warning"
+                          >
+                            Đã xác nhận
+                          </Tag>
+                        )}
+
+                      {item.status &&
+                        item.status === "confirmed" &&
+                        item.check_in_date &&
+                        !item.return_date && (
+                          <Tag icon={<SyncOutlined spin />} color="processing">
+                            Đang thuê
+                          </Tag>
+                        )}
+
+                      {item.status &&
+                        item.status === "confirmed" &&
+                        item.check_in_date &&
+                        item.return_date && (
+                          <Tag icon={<CheckCircleOutlined />} color="success">
+                            Đã trả phòng
+                          </Tag>
+                        )}
                     </td>
                     <td>
                       {!item.status && (

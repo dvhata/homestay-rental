@@ -1,14 +1,16 @@
-import "./AdminDashboard.scss";
+import './AdminDashboard.scss';
 
-import DownOutlined from "@ant-design/icons/lib/icons/DownOutlined";
-import { Button, Col, Dropdown, Input, Menu, Row, Tag } from "antd";
-import React from "react";
-import { Link } from "react-router-dom";
+import DownOutlined from '@ant-design/icons/lib/icons/DownOutlined';
+import { Button, Col, Dropdown, Input, Menu, Row } from 'antd';
+import React from 'react';
+import Moment from 'react-moment';
+import NumberFormat from 'react-number-format';
+import { Link } from 'react-router-dom';
 
-import adminApi from "../../../api/AdminApi";
-import { AuthToken } from "../../../models/AuthToken/AuthToken";
-import { Order } from "../../../models/Order/Order";
-import { User } from "../../../models/User/User";
+import adminApi from '../../../api/AdminApi';
+import { AuthToken } from '../../../models/AuthToken/AuthToken';
+import { Order } from '../../../models/Order/Order';
+import { User } from '../../../models/User/User';
 
 export default function AdminStayingOrder() {
   const [authToken, setAuthToken] = React.useState<AuthToken>();
@@ -20,7 +22,6 @@ export default function AdminStayingOrder() {
   }, []);
 
   const slugName = authToken?.slug;
-  const login = authToken?.login;
   const username = authToken?.username;
 
   React.useEffect(() => {
@@ -54,8 +55,10 @@ export default function AdminStayingOrder() {
   const handleOrderConfirm = async (e: any) => {
     adminApi.checkout(token as string, e.target.value).then((result) => {
       setStayingOrder(result);
+      console.log(result);
+      alert("Số tiền khách cần thanh toán:" + result.payment);
     });
-    window.location.reload();
+    
   };
 
   // search
@@ -65,37 +68,11 @@ export default function AdminStayingOrder() {
     adminApi.searchStaying(token as string, data as any).then((result) => {
       setStayingOrder(result);
     });
-   
-  };
-
-  const handleCancel = async (e: any) => {
-    adminApi.cancel(token as string, e.target.value).then((result) => {
-      setStayingOrder(result);
-    });
-    window.location.reload();
   };
 
   return (
     <div className="all">
-      {!login && (
-        <div className="div-not-login">
-          <h1 className="h1-not-login">
-            Ban phai dang nhap hoac dang ky de tiep tuc!
-          </h1>
-          <img
-            className="img-not-login"
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Warning.svg/2219px-Warning.svg.png"
-            alt="error"
-          />
-          <Button className="button-not-login" type="dashed">
-            <Link to="/admin-register">Dang ky</Link>
-          </Button>
-          <Button className="button-not-login" type="dashed">
-            <Link to="/admin-login">Dang nhap</Link>
-          </Button>
-        </div>
-      )}
-      {login && (
+      
         <>
           <Row>
             <Col className="col-1-dashboard" span={4}>
@@ -139,7 +116,12 @@ export default function AdminStayingOrder() {
                         <Search
                           placeholder="Nhập tên khách hàng"
                           onSearch={onSearch}
-                          style={{ width: 400, marginLeft: "65%" }}
+                          style={{
+                            width: 400,
+                            marginLeft: "65%",
+                            marginTop: "20px",
+                            marginBottom: "20px",
+                          }}
                         />
                         <table>
                           <tr>
@@ -147,7 +129,8 @@ export default function AdminStayingOrder() {
                             <th>Email</th>
                             <th>Tên căn hộ</th>
                             <th>Giá tiền</th>
-                            <th>Thời gian đặt</th>
+                            <th>Ngày thuê phòng</th>
+                            <th>Ngày trả phòng</th>
 
                             <th></th>
                           </tr>
@@ -158,29 +141,41 @@ export default function AdminStayingOrder() {
                                 <tr key={item._id}>
                                   <td>{item.cus_name}</td>
                                   <td>{item.email}</td>
+                                  <td>{item.apartment_name}</td>
                                   <td>
-                                    <Link
-                                      to={`/apartment-detail/${item.apartment_slug}`}
-                                    >
-                                      {item.apartment_name}
-                                    </Link>
+                                    <NumberFormat
+                                      value={item.price}
+                                      displayType={"text"}
+                                      thousandSeparator={true}
+                                    />
+                                    {"đ "}
                                   </td>
-                                  <td>{item.price}</td>
-                                  <td>{item.order_date}</td>
+                                  <td>
+                                    {" "}
+                                    {item.order_date && (
+                                      <Moment
+                                        date={item.order_date}
+                                        format="DD/MM/YYYY"
+                                      ></Moment>
+                                    )}
+                                  </td>
+                                  <td>
+                                    {" "}
+                                    {item.check_in_date && (
+                                      <Moment
+                                        date={item.check_in_date}
+                                        format="DD/MM/YYYY"
+                                      ></Moment>
+                                    )}
+                                    {!item.check_in_date && "---"}
+                                  </td>
 
                                   <td>
                                     <button
                                       value={item._id}
                                       onClick={handleOrderConfirm}
                                     >
-                                      Xác nhận
-                                    </button>
-                                    <br></br>
-                                    <button
-                                      value={item._id}
-                                      onClick={handleCancel}
-                                    >
-                                      Hủy đơn
+                                      Thanh toán
                                     </button>
                                   </td>
                                 </tr>
@@ -195,7 +190,7 @@ export default function AdminStayingOrder() {
             </Col>
           </Row>
         </>
-      )}
+
     </div>
   );
 }
