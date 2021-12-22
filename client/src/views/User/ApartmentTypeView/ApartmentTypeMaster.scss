@@ -1,15 +1,23 @@
 .breadcrumb {
-  .text-header {
-    margin-top: 80px;
-    margin-left: 10%;
-    margin-right: 30px;
-    background-color: #f4d3ec;
+  padding:5%;
+  padding-top:20px;
+  padding-bottom: 5px;
+}
+.text-header {
+  margin: auto;
+  background-color:#f4d3ec;
+  width:70%;
+  margin-top: 20px;
+  h1 {
+    font-weight: bold;
+  }
+  
+  h1,h3 {
+    padding: 20px;
+    margin: 10px;
+    text-align: center;
   }
 }
-.container {
-  
-}
-
 .img {
   width: 100%;
   height: 100%;
@@ -20,16 +28,34 @@ h3 {
   margin: 10%;
 }
 
-.apartment-type-detail{
-    margin-top: 200px;
-    background-color: #f4d3ecb2;
+.apartment-type-detail {
+  margin-top: 200px;
+  background-color: #f4d3ecb2;
 }
 
 .link {
-    color:black;
+  color: black;
 }
 
 .img-type {
-  width: 600px;
-  height: 509px;
+  margin: 0px;
+  width: 100%;
+  height: 350px;
+}
+
+.apartment-type-title {
+  margin: 0px;
+  color: black;
+  font-weight: bold;
+}
+
+.apartment-type-content {
+  margin: 0px;
+  margin-bottom: 50px;
+  margin-top: 20px;
+  margin-right: 40px;
+}
+
+.apartment-type-div {
+  margin: 30px;
 }

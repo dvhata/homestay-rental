@@ -1,9 +1,11 @@
 import { Button, Checkbox, Form, Input } from "antd";
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import Footer from "../../../components/Footer/Footer";
 
 import Header from "../../../components/Header/Header";
 import axiosClient from "../../../config/axiosClient";
-import "./Register.scss"
+import "./Register.scss";
 
 const formItemLayout = {
   labelCol: {
@@ -53,17 +55,24 @@ export default function Register() {
   const handleOnChangeAddress = React.useCallback((e) => {
     setAddress(e.target.value);
   }, []);
+  const navigate = useNavigate();
 
   const onFinish = async () => {
     const data = { email, password, username, tel, address };
 
     axiosClient.post("/users/signup", { data }).then((response) => {
-      setSignUp(response.data.message);
+      setSignUp(response.data.success);
     });
-
-    isSignUp ? alert("Successful") : alert("Email đã được đăng kí");
+    alert("Successful");
+    navigate("/login");
   };
 
+  // if (isSignUp) {
+  //   alert("Successful");
+  //   navigate("/login");
+  // } else {
+  //   alert("Email đã được đăng kí");
+  // }
   return (
     <>
       {" "}
@@ -186,6 +195,7 @@ export default function Register() {
           <Button htmlType="submit">Đăng ký</Button>
         </Form.Item>
       </Form>
+      <Footer />
     </>
   );
 }

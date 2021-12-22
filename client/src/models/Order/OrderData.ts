@@ -12,5 +12,5 @@ export interface OrderData {
   status?: string;
   order_date?: Moment;
   return_date?: Moment;
-  checkin_date?: Moment;
+  check_in_date?: Moment;
 }

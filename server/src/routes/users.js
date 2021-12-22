@@ -6,7 +6,7 @@ const authMiddleware = require('../app/middlewares/authMiddleware');
 const userMiddleware = require('../app/middlewares/userMiddleware');
 
 router.post('/:slugName/edit', userMiddleware, userController.editProfile);
-router.patch('/orders/:id/cancel', userMiddleware, userController.cancel);
+router.post('/orders/:id/cancel', userMiddleware, userController.cancel); // sua patch thanh post
 router.get('/orders', userMiddleware, userController.orders);
 router.get('/auth-token', userController.authToken);
 router.post('/login', userController.login);

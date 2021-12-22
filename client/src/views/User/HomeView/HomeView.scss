@@ -5,8 +5,8 @@ div {
     display: flex;
     width: 100%;
     height: 100%;
-    margin-left: 7%;
     .col-1 {
+      margin-left: 5%;
       h1 {
         font-weight: bold;
         font-size: 50px;
@@ -22,20 +22,20 @@ div {
         border: none;
         border-radius: 10px;
         .link {
-          font-size: 15px;
+          font-size: 16px;
           color: #fbf1f3;
           text-decoration: none;
         }
       }
       .link-admin {
         margin-left: 10px;
-        font-size: 15px;
+        font-size: 16px;
         color: black;
       }
 
       .link-admin:hover {
         margin-left: 10px;
-        font-size: 15px;
+        font-size: 16px;
         color: #51784f;
       }
       
@@ -47,7 +47,7 @@ div {
     }
     .anh-1 {
       img {
-        width: 60%;
+        width: 70%;
         height: 50%;
       }
     }

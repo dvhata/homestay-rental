@@ -10,10 +10,13 @@ export default function Home() {
       <Header />
       <div className="container">
         <Row>
-          <Col className="col-1" lg={9}>
+          <Col className="col-1" lg={10}>
             {" "}
-            <h1>Homestay...! Chim trên cây </h1>
-            <h3>Một homestay nhỏ xinh giữa lòng Đà Lạt thơ mộng!</h3>
+            <h1>Chim trên cây </h1>
+            <h3>
+              Một homestay nhỏ xinh giữa lòng Đà Lạt thơ mộng! Cùng rời xa đô
+              thị ồn ào để đắm chìm vào thiên nhiên và bình yên
+            </h3>
             <button>
               <Link className="link" to="/apartment-type">
                 Xem căn hộ
@@ -27,7 +30,7 @@ export default function Home() {
               Ban la admin?
             </Link>
           </Col>
-          <Col className="col-2" lg={15}>
+          <Col className="col-2" lg={12}>
             <div className="anh-1">
               <img
                 src="https://cdn.dribbble.com/users/1066220/screenshots/16679547/media/9f01e7ff9c8c386bd2dd22c5536bfee8.jpg"

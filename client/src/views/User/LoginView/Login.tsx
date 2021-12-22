@@ -1,16 +1,19 @@
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Col, Form, Input, Row } from "antd";
-import React from "react";
-import { Link } from "react-router-dom";
+import './Login.scss';
 
-import Header from "../../../components/Header/Header";
-import axiosClient from "../../../config/axiosClient";
-import "./Login.scss";
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Checkbox, Form, Input } from 'antd';
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+
+import Footer from '../../../components/Footer/Footer';
+import Header from '../../../components/Header/Header';
+import axiosClient from '../../../config/axiosClient';
 
 export default function Login() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [isLogin, setLogin] = React.useState();
+  const navigate = useNavigate();
 
   const onFinish = async () => {
     const data = { email, password };
@@ -18,8 +21,15 @@ export default function Login() {
       localStorage.setItem("token", response.data.token);
       setLogin(response.data.success);
     });
-    isLogin ? alert("Successful") : alert("Failed");
+    if (isLogin) {
+      alert("Successful");
+      navigate("/");
+    }
   };
+  const token= localStorage.getItem("token")
+  console.log(token);
+  console.log(isLogin)
+
 
   const handleChangeEmail = React.useCallback((e) => {
     setEmail(e.target.value);
@@ -83,15 +93,10 @@ export default function Login() {
           </Form.Item>
 
           <Link to="/admin-login">Bạn là quản trị viên?</Link>
+
         </Form>
+        <Footer/>
       </div>
-      {/* <div className="login-col-2">
-        <img
-          className="login-img-2"
-          src="https://cdn.dribbble.com/users/2582849/screenshots/16841680/media/0a22d6021a09c7d023ef13e60b93810f.jpg"
-          alt="error"
-        />
-      </div> */}
     </>
   );
 }
